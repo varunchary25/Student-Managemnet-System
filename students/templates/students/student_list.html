@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student List</title>
+</head>
+<body>
+
+    <h1>Student Management System</h1>
+
+    <h2>All Students</h2>
+
+    {% for student in students %}
+
+        <p>Name: {{ student.name }}</p>
+        <p>Roll Number: {{ student.roll_number }}</p>
+        <p>Age: {{ student.age }}</p>
+        <p>Email: {{ student.email }}</p>
+        <p>Course: {{ student.course }}</p>
+        <hr>
+
+    {% empty %}
+
+        <p>No students found.</p>
+
+    {% endfor %}
+
+</body>
+</html>
