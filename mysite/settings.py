@@ -177,10 +177,10 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5500",
     "http://localhost:5500",
     "http://127.0.0.1:8000",
-    "https://github.com/varunchary25/Student-Managemnet-System",
+    "https://student-managemnet-system-1-qsru.onrender.com",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
      "https://student-managemnet-system-eehf.onrender.com",
-     "https://github.com/varunchary25/Student-Managemnet-System",
+     "https://student-managemnet-system-1-qsru.onrender.com",
 ]
