@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
 
-    <meta name="viewport" 
+    <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
     <title>Student Management System</title>
@@ -12,54 +13,130 @@
 </head>
 
 <body>
+
     <header>
         <h1>Student Management System</h1>
-        <p>Manage your student records.</p>
+        <p>Manage your student records</p>
     </header>
+
     <main>
-        <!--Registration Form  -->
+
+        <!-- Registration Form -->
+
         <section class="form-section">
+
             <h2>Register Student</h2>
-            <form id="studentnForm">
-                <div class="form-group">
-                    <label for="name"> Student Name:</label>
 
-                    <input type="text" id="name" placeholder="Enter student name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="roll_number">Roll Number:</label>
-                    <input type="text" id="roll_number" placeholder="Enter roll number" name="roll_number" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" placeholder="Enter email" name="email" required>
-                </div>
+            <form id="studentForm">
 
                 <div class="form-group">
-                    <label for="course">Course:</label>
-                    <input type="text" id="course" placeholder="Enter course" name="course" required>
+
+                    <label for="name">Student Name</label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Enter student name"
+                        required
+                    >
+
                 </div>
+
                 <div class="form-group">
-                    <label for="age">Age:</label>
-                    <input type="number" id="age" placeholder="Enter age" min="1" required>
+
+                    <label for="roll_number">Roll Number</label>
+
+                    <input
+                        type="text"
+                        id="roll_number"
+                        placeholder="Enter roll number"
+                        required
+                    >
+
                 </div>
-                <button type="submit">Register student</button>
-                
+
+                <div class="form-group">
+
+                    <label for="email">Email</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter email"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="course">Course</label>
+
+                    <input
+                        type="text"
+                        id="course"
+                        placeholder="Enter course"
+                        required
+                    >
+
+                </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="age">Age</label>
+
+                    <input
+                        type="number"
+                        id="age"
+                        placeholder="Enter age"
+                        min="1"
+                        required
+                    >
+
+                </div>
+
+                <button type="submit">
+                    Register Student
+                </button>
+
             </form>
-            <p id="Message"></p>
-        </section>
-        <!--Student List  -->
-        <section class="list-section">
-           <div class="list-heading">
-            <h2> Registered Student List</h2>
-            <button id="refreshButton">Refresh List</button>
 
-           </div>
-           <div id="studentlist">
-            <div id="loadingMessage">Loading students ...</p>
-                </div>
-                </section>
-                </main>
-                <script src="script.js"></script>
-        </body>
+            <p id="message"></p>
+
+        </section>
+
+
+        <!-- Student List -->
+
+        <section class="list-section">
+
+            <div class="list-heading">
+
+                <h2>Registered Students</h2>
+
+                <button
+                    type="button"
+                    id="refreshButton"
+                >
+                    Refresh
+                </button>
+
+            </div>
+
+            <div id="studentList">
+
+                <p>Loading students...</p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+
 </html>

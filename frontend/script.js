@@ -1,74 +1,75 @@
 // Django API URLs
-
-
-
 const API_BASE_URL = "https://student-managemnet-system-eehf.onrender.com";
 
-const API_URL = "http://127.0.0.1:8000/api/students/";
+const API_URL = `${API_BASE_URL}/api/students/`;
+const CREATE_URL = `${API_BASE_URL}/api/students/create/`;
 
-const CREATE_URL = "http://127.0.0.1:8000/api/students/create/";
-
-
-// Get HTML elements
-
+// HTML Elements
 const studentForm = document.getElementById("studentForm");
-
 const studentList = document.getElementById("studentList");
-
 const message = document.getElementById("message");
-
 const refreshButton = document.getElementById("refreshButton");
 
 
-// GET: Load all students from Django
+// Common response handler
+async function handleResponse(response) {
+    const text = await response.text();
 
+    let data = {};
+
+    try {
+        data = text ? JSON.parse(text) : {};
+    } catch {
+        data = { detail: text };
+    }
+
+    if (!response.ok) {
+        throw new Error(
+            data.detail ||
+            data.error ||
+            JSON.stringify(data) ||
+            `HTTP Error: ${response.status}`
+        );
+    }
+
+    return data;
+}
+
+
+// GET: Fetch all students
 async function getStudents() {
 
     studentList.textContent = "Loading students...";
 
     try {
-
         const response = await fetch(API_URL);
 
-        if (!response.ok) {
-            throw new Error("Unable to fetch student records");
-        }
-
-        const students = await response.json();
+        const students = await handleResponse(response);
 
         displayStudents(students);
 
+    } catch (error) {
+
+        studentList.textContent = "Unable to load students: " + error.message;
+
+        console.error("GET Error:", error);
     }
-
-    catch (error) {
-
-        studentList.textContent = error.message;
-
-        console.error(error);
-
-    }
-
 }
 
 
-// Display student records
-
+// Display students
 function displayStudents(students) {
 
     studentList.replaceChildren();
 
-    if (students.length === 0) {
-
+    if (!Array.isArray(students) || students.length === 0) {
         studentList.textContent = "No students registered yet.";
-
         return;
-
     }
 
     students.forEach(student => {
 
         const card = document.createElement("div");
-
         card.className = "student-card";
 
         const name = document.createElement("h3");
@@ -80,45 +81,41 @@ function displayStudents(students) {
         const email = document.createElement("p");
         email.textContent = "Email: " + student.email;
 
-        const department = document.createElement("p");
-        department.textContent = "Department: " + student.department;
+        const course = document.createElement("p");
+        course.textContent = "Course: " + student.course;
 
         const age = document.createElement("p");
         age.textContent = "Age: " + student.age;
 
         const deleteButton = document.createElement("button");
-
         deleteButton.textContent = "Delete";
-
         deleteButton.className = "delete-button";
 
-        deleteButton.addEventListener("click", function () {
-
+        deleteButton.addEventListener("click", () => {
             deleteStudent(student.id);
-
         });
 
         card.append(
             name,
             roll,
             email,
-            department,
+            course,
             age,
             deleteButton
         );
 
         studentList.appendChild(card);
-
     });
-
 }
 
 
-// POST: Register a student
-
-studentForm.addEventListener("submit", async function (event) {
+// POST: Register student
+studentForm.addEventListener("submit", async function(event) {
 
     event.preventDefault();
+
+    message.textContent = "Registering student...";
+    message.style.color = "blue";
 
     const student = {
 
@@ -148,92 +145,64 @@ studentForm.addEventListener("submit", async function (event) {
 
         });
 
-        const data = await response.json();
-
-        if (!response.ok) {
-
-            throw new Error(JSON.stringify(data));
-
-        }
+        const data = await handleResponse(response);
 
         message.textContent = "Student registered successfully!";
-
         message.style.color = "green";
 
         studentForm.reset();
 
-        getStudents();
+        await getStudents();
 
-    }
-
-    catch (error) {
+    } catch(error) {
 
         message.textContent = "Registration failed: " + error.message;
 
         message.style.color = "red";
 
-        console.error(error);
-
+        console.error("POST Error:", error);
     }
 
 });
 
 
-// DELETE: Remove a student
-
+// DELETE: Delete student
 async function deleteStudent(studentId) {
 
-    const confirmDelete = confirm(
-        "Are you sure you want to delete this student?"
-    );
-
-    if (!confirmDelete) {
+    if (!confirm("Are you sure you want to delete this student?")) {
         return;
     }
 
     try {
 
         const response = await fetch(
-            API_URL + studentId + "/delete/",
+            `${API_URL}${studentId}/delete/`,
             {
                 method: "DELETE"
             }
         );
 
-        const data = await response.json();
-
-        if (!response.ok) {
-
-            throw new Error(data.error || "Unable to delete student");
-
-        }
+        await handleResponse(response);
 
         message.textContent = "Student deleted successfully!";
-
         message.style.color = "green";
 
-        getStudents();
+        await getStudents();
 
-    }
+    } catch(error) {
 
-    catch (error) {
-
-        message.textContent = error.message;
+        message.textContent = "Delete failed: " + error.message;
 
         message.style.color = "red";
 
-        console.error(error);
-
+        console.error("DELETE Error:", error);
     }
-
 }
 
 
 // Refresh button
-
 refreshButton.addEventListener("click", getStudents);
 
 
-// Load students when the webpage opens
-
+// Load students on page opening
 getStudents();
